@@ -1,0 +1,61 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+#app, #mainwrapper {
+  height: 100%;
+  display: flex;
+  width: 100%;
+}
+
+#sidebar .stories, #mainpane .comments, #mainpane .reader {
+  overflow-y: auto;
+  height: calc(100% - #{$topNavBarHeight});
+}
+
+#mainpane .reader {
+  height: calc(100% - #{$topNavBarHeight + 30px});
+}
+
+#sidebar {
+  flex-basis: 400px;
+  max-width: 400px;
+  flex-shrink: 0;
+}
+
+#mainpane {
+  max-width: calc(100% - 400px);
+  flex-grow: 1;
+}
+
+#sidebar-header, #mainpane-header {
+  height: $topNavBarHeight;
+  background: $color;
+  width: 100%;
+}
+
+
+.item-header {
+  background: $color;
+  color: white;
+  padding: 15px 10px;
+  padding-top: 5px;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  a {
+    display: block;
+    color: white;
+    text-decoration: none;
+  }
+}

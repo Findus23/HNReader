@@ -1,0 +1,7 @@
+{
+  "require": {
+    "j0k3r/graby": "^2.2",
+    "ext-json": "*",
+    "php-http/guzzle6-adapter": "^2.0"
+  }
+}
