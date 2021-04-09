@@ -1,6 +1,6 @@
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({
-    target: 'http://localhost:5000',
+    target: 'http://localhost:8000',
     timeout: 30 * 1000
 });
 
