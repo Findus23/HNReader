@@ -47,7 +47,8 @@ async def read(request: Request):
 
 
 async def topstories(request: Request):
-    data = await api.get_stories("topstories")
+    offset = int(request.query_params.get("offset", 0))
+    data = await api.get_stories("topstories", offset=offset)
     return JSONResponse(data)
 
 

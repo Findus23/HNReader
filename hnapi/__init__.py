@@ -39,8 +39,9 @@ class HNClient:
             item["kids"] = kids
         return item
 
-    async def get_stories(self, page: str, limit=25, offset=0):
-        key = f"hnclient_stories_{page}_{limit}"
+    async def get_stories(self, page: str, offset=0):
+        limit = 25
+        key = f"hnclient_stories_{page}_{offset}"
         cached = self.r.get(key)
         if cached:
             return json.loads(cached)
@@ -48,7 +49,7 @@ class HNClient:
         async with self.s.get(url) as response:
             response.raise_for_status()
             stories = await response.json()
-            stories = stories[offset:limit]
+            stories = stories[offset:limit + offset]
         tasks = []
         for id in stories:
             task = asyncio.ensure_future(self.get_item(id))

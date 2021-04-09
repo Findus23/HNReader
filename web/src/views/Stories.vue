@@ -12,7 +12,8 @@
                 <div class="points">{{ story.score }}</div>
             </router-link>
         </div>
-        <pre class="debug"><code>{{ stories }}</code></pre>
+        <div class="load-more storywrapper" @click="loadStory">LOAD MORE</div>
+        <!--        <pre class="debug"><code>{{ stories }}</code></pre>-->
     </div>
 </template>
 
@@ -20,23 +21,28 @@
 import {defineComponent} from "vue";
 import {Item} from "../interfaces";
 import {dateToText} from "../utils";
+
+const STORIES_PER_LOAD = 25;
+
 export default defineComponent({
     name: "Stories",
     data() {
         return {
-            stories: [] as Item[]
+            stories: [] as Item[],
         }
     },
     methods: {
         loadStory(): void {
-            fetch("/api/topstories")
+            fetch("/api/topstories?" + new URLSearchParams({
+                offset: this.stories.length.toString()
+            }))
               .then(response => {
                   if (response.ok) {
                       return response.json()
                   }
                   return Promise.reject(response)
               })
-              .then(data => (this.stories = data))
+              .then(data => (this.stories.push(...data)))
         },
         isActiveStory(item: Item): boolean {
             return this.$route.params.item === item.id.toString()

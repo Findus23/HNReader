@@ -5,7 +5,7 @@
         <div>{{ prettyDate }}</div>
         <div>{{ prettyAuthors }}</div>
         <div class="reader-html" v-html="readerData.html"></div>
-        <pre class="debug"><code>{{ readerData }}</code></pre>
+<!--        <pre class="debug"><code>{{ readerData }}</code></pre>-->
     </div>
 </template>
 

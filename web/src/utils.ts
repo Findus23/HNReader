@@ -31,3 +31,6 @@ export function dateToText(timestamp: number): string {
     const date = new Date(timestamp * 1000)
     return date.toLocaleString()
 }
+
+// @ts-ignore
+export const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
