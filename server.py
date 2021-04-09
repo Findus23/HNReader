@@ -5,13 +5,18 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 from starlette.routing import Route
 
-from config import debug
+from config import debug, user_agent, redis_socket
 from hnapi import HNClient
 from reader import Reader
 
 conn = aiohttp.TCPConnector(ttl_dns_cache=60 * 10)
-session = aiohttp.ClientSession(connector=conn)
-r = Redis()
+session = aiohttp.ClientSession(connector=conn, headers={
+    "User-Agent": user_agent
+})
+if redis_socket:
+    r = Redis(unix_socket_path=redis_socket)
+else:
+    r = Redis()
 reader = Reader()
 
 api = HNClient(session, r)
@@ -51,4 +56,3 @@ app = Starlette(debug=debug, routes=[
     Route('/api/read/{item_id:int}', read),
     Route('/api/topstories', topstories),
 ])
-
