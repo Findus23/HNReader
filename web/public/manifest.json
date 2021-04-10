@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest.json",
+  "name": "HNReader",
+  "background_color": "#FF6600",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icon/128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/icon/512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "lang": "en-US",
+  "scope": "/",
+  "start_url": "/"
+}

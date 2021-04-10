@@ -13,8 +13,10 @@ export function dateToText(timestamp: number): string {
     // inspired by https://github.com/premii/hn/blob/76ba1721f0ca5dead6fe9ac62afdf42911ebc244/a/js/helper.js#L292
     const now = Date.now() / 1000
     const diff = now - timestamp
-    if (diff <= 60) {
-        return diff / 60 + " seconds"
+    if (diff <= MINUTE) {
+        const value = absround(diff )
+
+        return value + " seconds"
     }
     if (diff < HOUR) {
         const value = absround(diff / MINUTE)
