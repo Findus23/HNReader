@@ -44,6 +44,34 @@ html, body {
   width: 100%;
 }
 
+#sidebar-header {
+  display: flex;
+  justify-content: space-between;
+
+  button, a {
+    text-decoration: none;
+    display: block;
+    border: none;
+    background: none;
+    color: white;
+    height: 100%;
+
+    svg {
+      width: 32px;
+      transition: all .2s;
+    }
+
+    &:hover, &:focus {
+      svg {
+        transform: rotate(270deg);
+      }
+    }
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
 
 .item-header {
   background: $color;
@@ -53,11 +81,21 @@ html, body {
 
   h2 {
     margin-top: 0;
+    margin-bottom: .3rem;
   }
 
   a {
     display: block;
     color: white;
     text-decoration: none;
+  }
+
+  div {
+    display: flex;
+    justify-content: left;
+
+    span {
+      padding-right: 5px;
+    }
   }
 }

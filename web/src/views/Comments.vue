@@ -1,6 +1,7 @@
 <template>
     <div class="comments">
         <Header :item="story"></Header>
+        <comment v-if="!story.url" :item="story" :original-author="story.by" :text-post="true"></comment>
         <div v-if="loading">LOADING</div>
         <comment :item="story" :original-author="story.by" :first-layer="true"></comment>
         <!--        <pre class="debug"><code>{{ story }}</code></pre>-->

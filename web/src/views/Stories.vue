@@ -12,7 +12,9 @@
                 <div class="points">{{ story.score }}</div>
             </router-link>
         </div>
-        <div class="load-more storywrapper" @click="loadStory">LOAD MORE</div>
+        <div class="load-more storywrapper" @click="loadStory">
+            <div>Load More</div>
+        </div>
         <!--        <pre class="debug"><code>{{ stories }}</code></pre>-->
     </div>
 </template>
@@ -43,6 +45,10 @@ export default defineComponent({
                   return Promise.reject(response)
               })
               .then(data => (this.stories.push(...data)))
+        },
+        refreshStories(): void {
+            this.stories = [] as Item[]
+            this.loadStory()
         },
         isActiveStory(item: Item): boolean {
             return this.$route.params.item === item.id.toString()

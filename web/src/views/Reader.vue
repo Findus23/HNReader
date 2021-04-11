@@ -2,7 +2,7 @@
     <div class="reader">
         <div v-if="loading">loading article</div>
         <h1>{{ readerData.title }}</h1>
-        <div>{{ prettyDate }}</div>
+        <div v-if="!loading">{{ prettyDate }}</div>
         <div>{{ prettyAuthors }}</div>
         <div class="reader-html" v-html="readerData.html"></div>
 <!--        <pre class="debug"><code>{{ readerData }}</code></pre>-->

@@ -81,11 +81,21 @@ pre {
     }
 
     .points {
-      background: lightgray;
+      background: rgba(0, 0, 0, .031);
+      color: #888;
     }
   }
+
   .load-more {
-    height: 50px;
+    width: 100%;
+    background: #ccc;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    div {
+      padding: 1rem 0;
+    }
   }
 }
 
@@ -105,8 +115,17 @@ pre {
     padding: 10px 15px;
   }
 
-  &.fromauthor {
+  &.fromauthor:not(.textpost) {
     box-shadow: 3px 0 0 $color inset;
+  }
+
+  &.textpost {
+    background: #FFF1E7;
+    border-bottom: 5px solid $color;
+  }
+
+  &.dead {
+    color: #777
   }
 }
 

@@ -1,13 +1,14 @@
 <template>
     <div v-if="!item.deleted">
-        <div :class="{comment:true,fromauthor:item.by===originalAuthor}" v-if="!firstLayer">
+        <div :class="{comment:true, fromauthor:item.by===originalAuthor, textpost:textPost, dead:item.dead}" v-if="!firstLayer">
             <div class="comment-header" @click="toogleCollapse">
                 <div class="author">{{ item.by }}</div>
-                <div class="time">{{ dateToText(item.time) }}</div>
+                <div class="time">{{ prettyTime }}</div>
+                <div v-if="item.dead">[dead]</div>
             </div>
             <div class="text" v-html="item.text" v-if="!collapsed"></div>
         </div>
-        <div v-for="kid in item.kids" :key="kid.id" class="kids" v-if="!collapsed">
+        <div v-for="kid in item.kids" :key="kid.id" class="kids" v-if="!collapsed && !textPost">
             <comment :item="kid" :original-author="originalAuthor"></comment>
         </div>
     </div>
@@ -27,6 +28,10 @@ export default defineComponent({
         firstLayer: {
             type: Boolean,
             default: () => false
+        },
+        textPost: {
+            type: Boolean,
+            default: () => false
         }
     },
     data() {
@@ -34,14 +39,18 @@ export default defineComponent({
             collapsed: false
         }
     },
+    computed: {
+        prettyTime(): string {
+            if (!this.item) {
+                return ""
+            }
+            return dateToText(this.item.time)
+        }
+    },
     methods: {
         toogleCollapse(): void {
-            console.log("toggle")
             this.collapsed = !this.collapsed;
         },
-        dateToText(num: number): string {
-            return dateToText(num)
-        }
     }
 })
 </script>
