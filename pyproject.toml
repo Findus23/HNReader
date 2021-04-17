@@ -15,7 +15,6 @@ gunicorn = "^20.1.0"
 uvloop = "^0.15.2"
 httptools = "^0.1.1"
 setproctitle = "^1.2.2"
-asgi-ratelimit = {extras = ["redis"], version = "^0.4.0"}
 
 [tool.poetry.dev-dependencies]
 
