@@ -3,11 +3,10 @@ from aredis import StrictRedis
 from ratelimit import RateLimitMiddleware, Rule
 from ratelimit.auths.session import from_session
 from starlette.applications import Starlette
-from starlette.middleware import Middleware
-from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 from starlette.routing import Route
+
 from config import debug, user_agent, redis_socket
 from hnapi import HNClient
 from reader import Reader
