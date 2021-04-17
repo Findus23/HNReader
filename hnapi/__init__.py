@@ -2,19 +2,19 @@ import asyncio
 import json
 
 from aiohttp import ClientSession
-from redis import Redis
+from aredis import StrictRedis
 
 API_BASEURL = "https://hacker-news.firebaseio.com/v0/"
 
 
 class HNClient:
-    def __init__(self, session: ClientSession, redis: Redis):
+    def __init__(self, session: ClientSession, redis: StrictRedis):
         self.s = session
         self.r = redis
 
     async def get_item(self, item_id: int, remove_kids=True):
         key = f"hnclient_item_{item_id}"
-        cache = self.r.get(key)
+        cache = await self.r.get(key)
         if cache:
             return json.loads(cache)
         url = f"{API_BASEURL}item/{item_id}.json"
@@ -22,7 +22,7 @@ class HNClient:
             response.raise_for_status()
             text = await response.text()
             item = json.loads(text)
-        self.r.set(key, text, ex=60 * 15)
+        await self.r.set(key, text, ex=60 * 15)
         if "kids" in item and remove_kids:
             del item["kids"]
         return item
@@ -42,7 +42,7 @@ class HNClient:
     async def get_stories(self, page: str, offset=0):
         limit = 25
         key = f"hnclient_stories_{page}_{offset}"
-        cached = self.r.get(key)
+        cached = await self.r.get(key)
         if cached:
             return json.loads(cached)
         url = f"{API_BASEURL}{page}.json"
@@ -56,5 +56,5 @@ class HNClient:
             tasks.append(task)
 
         full_stories = await asyncio.gather(*tasks)
-        self.r.set(key, json.dumps(full_stories), ex=60 * 15)
+        await self.r.set(key, json.dumps(full_stories), ex=60 * 15)
         return full_stories
