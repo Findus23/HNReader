@@ -1,7 +1,7 @@
 import aiohttp
 from aredis import StrictRedis
 from ratelimit import RateLimitMiddleware, Rule
-from ratelimit.auths.session import from_session
+from ratelimit.auths.ip import client_ip
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
@@ -66,7 +66,7 @@ app = Starlette(debug=debug, routes=[
 if not debug:
     app.add_middleware(
         RateLimitMiddleware,
-        authenticate=from_session,
+        authenticate=client_ip,
         backend=CustomRedisBackend(r),
         config={
             r"^/api/": [Rule(minute=4)],
