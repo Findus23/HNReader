@@ -1,7 +1,5 @@
 import aiohttp
 from aredis import StrictRedis
-from ratelimit import RateLimitMiddleware, Rule
-from ratelimit.auths.ip import client_ip
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
@@ -10,7 +8,6 @@ from starlette.routing import Route
 from config import debug, user_agent, redis_socket
 from hnapi import HNClient
 from reader import Reader
-from redis_backend import CustomRedisBackend
 
 conn = aiohttp.TCPConnector(ttl_dns_cache=60 * 10)
 session = aiohttp.ClientSession(connector=conn, headers={
@@ -62,13 +59,3 @@ app = Starlette(debug=debug, routes=[
     Route('/api/read/{item_id:int}', read),
     Route('/api/topstories', topstories),
 ])
-
-if not debug:
-    app.add_middleware(
-        RateLimitMiddleware,
-        authenticate=client_ip,
-        backend=CustomRedisBackend(r),
-        config={
-            r"^/api/": [Rule(minute=4)],
-        },
-    )
