@@ -29,8 +29,6 @@ async def item(request: Request):
 
 
 async def read(request: Request):
-    print(request.session)
-    request.session.update({"a": "b"})
     item_id = request.path_params["item_id"]
     item = await api.get_item(item_id)
     if "url" not in item:
