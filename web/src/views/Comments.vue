@@ -1,5 +1,5 @@
 <template>
-    <div class="comments">
+    <div id="comments">
         <Header :item="story"></Header>
         <comment v-if="!story.url" :item="story" :original-author="story.by" :text-post="true"></comment>
         <div v-if="loading">LOADING</div>
@@ -40,6 +40,11 @@ export default defineComponent({
               })
               .then(data => (this.story = data))
               .then(a => {
+                  const el = document.getElementById("comments");
+                  if (el) {
+                      console.log(el)
+                      el.scrollTop = 0
+                  }
                   this.loading = false;
                   document.title = this.story.title
               })

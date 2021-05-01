@@ -18,7 +18,7 @@ html, body {
   background: white;
 }
 
-#sidebar .stories, #mainpane .comments, #mainpane .reader {
+#sidebar .stories, #mainpane #comments, #mainpane .reader {
   overflow-y: auto;
   height: calc(100% - #{$topNavBarHeight});
 }
