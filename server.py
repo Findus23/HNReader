@@ -33,7 +33,10 @@ async def read(request: Request):
     item = await api.get_item(item_id)
     if "url" not in item:
         return "Url not found", 404
-    if not debug and request.client not in trusted_ips:
+    if not debug and (
+            "x-forwarded-for" not in request.headers
+            or request.headers["x-forwarded-for"] not in trusted_ips
+    ):
         return JSONResponse({
             "title": "Reader View not public",
             "html": "For security reasons, this instance doesn't allow fetching a reader-friendly version of the website."
