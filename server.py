@@ -5,7 +5,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 from starlette.routing import Route
 
-from config import debug, user_agent, redis_socket
+from config import debug, user_agent, redis_socket, trusted_ips
 from hnapi import HNClient
 from reader import Reader
 
@@ -33,6 +33,15 @@ async def read(request: Request):
     item = await api.get_item(item_id)
     if "url" not in item:
         return "Url not found", 404
+    if not debug and request.client not in trusted_ips:
+        return JSONResponse({
+            "title": "Reader View not public",
+            "html": "For security reasons, this instance doesn't allow fetching a reader-friendly version of the website."
+                    "If you want to use this feature, please set up you own instance "
+                    "<a href='https://github.com/Findus23/HNReader/'>from the source code of this site</a> "
+                    "or read the <a href='" + item["url"] + "'>original site</a>."
+        })
+
     key = f"hnclient_read_{item_id}"
 
     cache = await r.get(key)

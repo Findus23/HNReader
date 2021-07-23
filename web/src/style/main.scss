@@ -1,6 +1,6 @@
-@import "variables";
-@import "reboot";
-@import "layout";
+@import "./variables";
+@import "./reboot";
+@import "./layout";
 
 html {
   font-family: sans-serif;
@@ -155,7 +155,7 @@ pre {
 }
 
 .reader-html {
-  font-family: serif;
+  //font-family: serif;
 
   h1, h2, h3, h4, h5, h6 {
     font-family: sans-serif;
