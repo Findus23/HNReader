@@ -1,5 +1,5 @@
-import aiohttp
 from aredis import StrictRedis
+from httpx import AsyncClient, Timeout
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
@@ -9,9 +9,8 @@ from config import debug, user_agent, redis_socket, trusted_ips
 from hnapi import HNClient
 from reader import Reader
 
-conn = aiohttp.TCPConnector(ttl_dns_cache=60 * 10)
-session = aiohttp.ClientSession(connector=conn, headers={
-    "User-Agent": user_agent
+session = AsyncClient(timeout=Timeout(timeout=15.0), headers={
+    "User-Agent": user_agent,
 })
 if redis_socket:
     r = StrictRedis(unix_socket_path=redis_socket)

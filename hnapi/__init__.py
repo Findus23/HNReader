@@ -1,14 +1,14 @@
 import asyncio
 import json
 
-from aiohttp import ClientSession
 from aredis import StrictRedis
+from httpx import AsyncClient
 
 API_BASEURL = "https://hacker-news.firebaseio.com/v0/"
 
 
 class HNClient:
-    def __init__(self, session: ClientSession, redis: StrictRedis):
+    def __init__(self, session: AsyncClient, redis: StrictRedis):
         self.s = session
         self.r = redis
 
@@ -18,11 +18,10 @@ class HNClient:
         if cache:
             return json.loads(cache)
         url = f"{API_BASEURL}item/{item_id}.json"
-        async with self.s.get(url) as response:
-            response.raise_for_status()
-            text = await response.text()
-            item = json.loads(text)
-        await self.r.set(key, text, ex=60 * 15)
+        response = await self.s.get(url)
+        response.raise_for_status()
+        item = json.loads(response.text)
+        await self.r.set(key, response.text, ex=60 * 15)
         if "kids" in item and remove_kids:
             del item["kids"]
         return item
@@ -46,10 +45,10 @@ class HNClient:
         if cached:
             return json.loads(cached)
         url = f"{API_BASEURL}{page}.json"
-        async with self.s.get(url) as response:
-            response.raise_for_status()
-            stories = await response.json()
-            stories = stories[offset:limit + offset]
+        response = await self.s.get(url)
+        response.raise_for_status()
+        stories = response.json()
+        stories = stories[offset:limit + offset]
         tasks = []
         for id in stories:
             task = asyncio.ensure_future(self.get_item(id))
