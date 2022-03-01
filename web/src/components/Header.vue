@@ -1,5 +1,5 @@
 <template>
-    <div class="item-header">
+    <div class="item-header" v-if="item">
         <h2>
             <span v-if="item.dead">[dead]</span>
             {{ item.title }}
@@ -28,6 +28,9 @@ export default defineComponent({
     },
     computed: {
         hnURL(): string {
+            if (!this.item) {
+                return "#"
+            }
             return "https://news.ycombinator.com/item?id=" + this.item.id
         },
         prettyTime(): string {

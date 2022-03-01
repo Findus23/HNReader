@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!item.deleted">
+    <div v-if="item && !item.deleted">
         <div :class="{comment:true, fromauthor:item.by===originalAuthor, textpost:textPost, dead:item.dead}" v-if="!firstLayer">
             <div class="comment-header" @click="toogleCollapse">
                 <div class="author">{{ item.by }}</div>
