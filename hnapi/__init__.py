@@ -1,7 +1,7 @@
 import asyncio
 import json
 
-from aredis import StrictRedis
+from redis.asyncio.client import StrictRedis
 from httpx import AsyncClient
 
 API_BASEURL = "https://hacker-news.firebaseio.com/v0/"

@@ -1,5 +1,5 @@
-from aredis import StrictRedis
 from httpx import AsyncClient, Timeout
+from redis.asyncio.client import StrictRedis
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
