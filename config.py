@@ -4,3 +4,4 @@ debug = True
 redis_socket = False
 
 trusted_ips = {}
+city = "Vienna"

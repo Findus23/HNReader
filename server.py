@@ -1,3 +1,6 @@
+from pathlib import Path
+
+import maxminddb
 from httpx import AsyncClient, Timeout
 from redis.asyncio.client import StrictRedis
 from starlette.applications import Starlette
@@ -5,9 +8,11 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 from starlette.routing import Route
 
-from config import debug, user_agent, redis_socket, trusted_ips
+from config import debug, user_agent, redis_socket, city
 from hnapi import HNClient
 from reader import Reader
+
+geoip = maxminddb.open_database(Path(__file__).parent/'dbip-city-lite-2022-11.mmdb')
 
 session = AsyncClient(timeout=Timeout(timeout=15.0), headers={
     "User-Agent": user_agent,
@@ -19,6 +24,10 @@ else:
 reader = Reader()
 
 api = HNClient(session, r)
+
+
+async def is_from_city(ip: str) -> bool:
+    return geoip.get(ip)["city"]["names"]["en"] == city
 
 
 async def item(request: Request):
@@ -34,7 +43,7 @@ async def read(request: Request):
         return "Url not found", 404
     if not debug and (
             "x-forwarded-for" not in request.headers
-            or request.headers["x-forwarded-for"] not in trusted_ips
+            or not is_from_city(request.headers["x-forwarded-for"])
     ):
         return JSONResponse({
             "title": "Reader View not public",
