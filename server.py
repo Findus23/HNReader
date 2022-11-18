@@ -12,7 +12,7 @@ from config import debug, user_agent, redis_socket, city
 from hnapi import HNClient
 from reader import Reader
 
-geoip = maxminddb.open_database(Path(__file__).parent/'dbip-city-lite-2022-11.mmdb')
+geoip = maxminddb.open_database(Path(__file__).parent / 'dbip-city-lite-2022-11.mmdb')
 
 session = AsyncClient(timeout=Timeout(timeout=15.0), headers={
     "User-Agent": user_agent,
@@ -43,7 +43,7 @@ async def read(request: Request):
         return "Url not found", 404
     if not debug and (
             "x-forwarded-for" not in request.headers
-            or not is_from_city(request.headers["x-forwarded-for"])
+            or not await is_from_city(request.headers["x-forwarded-for"])
     ):
         return JSONResponse({
             "title": "Reader View not public",
